@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DRIP — The most aesthetic coffee shop experience. Bold brews, cozy vibes, and good energy only. ☕✨">
+    <title>DRIP ☕ — Coffee, But Make It Aesthetic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Cursor glow effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-icon">☕</span>
+                <span class="logo-text">DRIP</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#menu" class="nav-link">Menu</a>
+                <a href="#vibes" class="nav-link">Vibes</a>
+                <a href="#reviews" class="nav-link">Reviews</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button class="nav-admin" id="adminNavBtn">Admin</button>
+            <button class="nav-cta" id="orderBtn">Order Now ✨</button>
+            <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Now Serving Good Vibes Only ✨
+            </div>
+            <h1 class="hero-title">
+                <span class="title-line">Coffee,</span>
+                <span class="title-line title-italic">but make it</span>
+                <span class="title-line title-gradient">aesthetic.</span>
+            </h1>
+            <p class="hero-subtitle">
+                Where every sip is a vibe and every cup is an experience. 
+                Bold brews, cozy corners, and the WiFi password is on the wall. 💅
+            </p>
+            <div class="hero-actions">
+                <a href="#menu" class="btn btn-primary">
+                    <span>Explore Menu</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#vibes" class="btn btn-glass">
+                    <span>See The Vibes</span>
+                    <span class="btn-emoji">🎵</span>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number" data-target="15">0</span><span class="stat-suffix">K+</span>
+                    <span class="stat-label">Happy Sippers</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-target="42">0</span>
+                    <span class="stat-label">Drink Options</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-number" data-target="4.9">0</span>
+                    <span class="stat-label">Rating ⭐</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-image-wrapper">
+                <img src="images/hero.png" alt="Aesthetic coffee shop interior" loading="eager">
+                <div class="hero-image-glow"></div>
+            </div>
+            <div class="floating-card card-1">
+                <span class="card-emoji">🔥</span>
+                <span>Trending Now</span>
+            </div>
+            <div class="floating-card card-2">
+                <span class="card-emoji">⚡</span>
+                <span>Fresh Roasted Daily</span>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Marquee Section -->
+    <section class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span>COLD BREW ☕</span>
+                <span>•</span>
+                <span>MATCHA VIBES 🍵</span>
+                <span>•</span>
+                <span>OAT MILK ERA 🥛</span>
+                <span>•</span>
+                <span>AESTHETIC AF ✨</span>
+                <span>•</span>
+                <span>NO CAP GOOD ☕</span>
+                <span>•</span>
+                <span>BUSSIN' BREWS 🔥</span>
+                <span>•</span>
+                <span>SLAY ALL DAY 💅</span>
+                <span>•</span>
+                <span>COLD BREW ☕</span>
+                <span>•</span>
+                <span>MATCHA VIBES 🍵</span>
+                <span>•</span>
+                <span>OAT MILK ERA 🥛</span>
+                <span>•</span>
+                <span>AESTHETIC AF ✨</span>
+                <span>•</span>
+                <span>NO CAP GOOD ☕</span>
+                <span>•</span>
+                <span>BUSSIN' BREWS 🔥</span>
+                <span>•</span>
+                <span>SLAY ALL DAY 💅</span>
+                <span>•</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">✦ OUR MENU</span>
+                <h2 class="section-title">
+                    The <span class="text-gradient">good stuff</span> you 
+                    <span class="text-italic">actually</span> want
+                </h2>
+                <p class="section-desc">Every drink is a whole mood. No basic brews here — just main character energy in a cup. 💫</p>
+            </div>
+
+            <!-- Menu Filter -->
+            <div class="menu-filters">
+                <button class="filter-btn active" data-filter="all">All ✨</button>
+                <button class="filter-btn" data-filter="hot">Hot ☕</button>
+                <button class="filter-btn" data-filter="iced">Iced 🧊</button>
+                <button class="filter-btn" data-filter="special">Specials 🌟</button>
+            </div>
+
+            <!-- Menu Grid -->
+            <div class="menu-grid">
+                <div class="menu-card" data-category="hot">
+                    <div class="menu-card-image">
+                        <img src="images/hero.png" alt="Lavender Oat Latte">
+                        <div class="menu-card-badge">BESTSELLER 🔥</div>
+                    </div>
+                    <div class="menu-card-content">
+                        <div class="menu-card-header">
+                            <h3>Lavender Oat Latte</h3>
+                            <span class="menu-price">$6.50</span>
+                        </div>
+                        <p class="menu-card-desc">Dreamy lavender meets silky oat milk. It's giving main character energy.</p>
+                        <div class="menu-card-tags">
+                            <span class="tag">🌿 Vegan</span>
+                            <span class="tag">💜 Floral</span>
+                        </div>
+                        <button class="menu-card-btn" data-id="1" data-name="Lavender Oat Latte" data-price="6.50">Add to Order +</button>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-category="iced">
+                    <div class="menu-card-image">
+                        <img src="images/iced-coffee.png" alt="Iced Caramel Cloud">
+                        <div class="menu-card-badge">NEW ✨</div>
+                    </div>
+                    <div class="menu-card-content">
+                        <div class="menu-card-header">
+                            <h3>Iced Caramel Cloud</h3>
+                            <span class="menu-price">$7.00</span>
+                        </div>
+                        <p class="menu-card-desc">Cold brew topped with cloud-like caramel foam. No crumbs, just sips.</p>
+                        <div class="menu-card-tags">
+                            <span class="tag">🧊 Iced</span>
+                            <span class="tag">🍯 Sweet</span>
+                        </div>
+                        <button class="menu-card-btn" data-id="2" data-name="Iced Caramel Cloud" data-price="7.00">Add to Order +</button>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-category="special">
+                    <div class="menu-card-image">
+                        <img src="images/matcha.png" alt="Matcha Mochi Latte">
+                        <div class="menu-card-badge">FAN FAV 💚</div>
+                    </div>
+                    <div class="menu-card-content">
+                        <div class="menu-card-header">
+                            <h3>Matcha Mochi Latte</h3>
+                            <span class="menu-price">$7.50</span>
+                        </div>
+                        <p class="menu-card-desc">Ceremonial matcha + mochi bites. It's giving Tokyo café realness.</p>
+                        <div class="menu-card-tags">
+                            <span class="tag">🍵 Matcha</span>
+                            <span class="tag">🍡 Mochi</span>
+                        </div>
+                        <button class="menu-card-btn" data-id="3" data-name="Matcha Mochi Latte" data-price="7.50">Add to Order +</button>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-category="hot">
+                    <div class="menu-card-image">
+                        <img src="images/hero.png" alt="Brown Sugar Espresso">
+                    </div>
+                    <div class="menu-card-content">
+                        <div class="menu-card-header">
+                            <h3>Brown Sugar Espresso</h3>
+                            <span class="menu-price">$5.50</span>
+                        </div>
+                        <p class="menu-card-desc">Double shot with house-made brown sugar syrup. Bold and unapologetic.</p>
+                        <div class="menu-card-tags">
+                            <span class="tag">⚡ Strong</span>
+                            <span class="tag">🤎 Rich</span>
+                        </div>
+                        <button class="menu-card-btn" data-id="4" data-name="Brown Sugar Espresso" data-price="5.50">Add to Order +</button>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-category="iced">
+                    <div class="menu-card-image">
+                        <img src="images/iced-coffee.png" alt="Strawberry Sunset Cold Brew">
+                    </div>
+                    <div class="menu-card-content">
+                        <div class="menu-card-header">
+                            <h3>Strawberry Sunset</h3>
+                            <span class="menu-price">$7.25</span>
+                        </div>
+                        <p class="menu-card-desc">Strawberry puree + cold brew = a sunset in your cup. Period. 🌅</p>
+                        <div class="menu-card-tags">
+                            <span class="tag">🍓 Fruity</span>
+                            <span class="tag">🧊 Iced</span>
+                        </div>
+                        <button class="menu-card-btn" data-id="5" data-name="Strawberry Sunset" data-price="7.25">Add to Order +</button>
+                    </div>
+                </div>
+
+                <div class="menu-card" data-category="special">
+                    <div class="menu-card-image">
+                        <img src="images/matcha.png" alt="Butterfly Pea Lemonade">
+                        <div class="menu-card-badge">LIMITED 🦋</div>
+                    </div>
+                    <div class="menu-card-content">
+                        <div class="menu-card-header">
+                            <h3>Butterfly Pea Lemonade</h3>
+                            <span class="menu-price">$6.75</span>
+                        </div>
+                        <p class="menu-card-desc">Color-changing magic in a cup. TikTok approved, taste-bud certified. 💜→💙</p>
+                        <div class="menu-card-tags">
+                            <span class="tag">🦋 Magic</span>
+                            <span class="tag">🍋 Citrus</span>
+                        </div>
+                        <button class="menu-card-btn" data-id="6" data-name="Butterfly Pea Lemonade" data-price="6.75">Add to Order +</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vibes Section -->
+    <section class="vibes-section" id="vibes">
+        <div class="section-container">
+            <div class="vibes-grid">
+                <div class="vibes-content">
+                    <span class="section-tag">✦ THE VIBES</span>
+                    <h2 class="section-title">
+                        Not just a café,<br>
+                        it's a whole <span class="text-gradient">aesthetic</span>
+                    </h2>
+                    <p class="vibes-text">
+                        We built DRIP for the ones who screenshot their latte art, 
+                        who need the perfect lighting for their study sesh, and who 
+                        believe coffee is a personality trait. No judgement, only vibes. ☕💅
+                    </p>
+                    <div class="vibes-features">
+                        <div class="vibe-feature">
+                            <div class="vibe-icon">📸</div>
+                            <div>
+                                <h4>Instagram-Worthy</h4>
+                                <p>Every corner is a photo op. Your feed will thank you.</p>
+                            </div>
+                        </div>
+                        <div class="vibe-feature">
+                            <div class="vibe-icon">🎧</div>
+                            <div>
+                                <h4>Curated Playlists</h4>
+                                <p>Lo-fi beats, indie vibes, and chill acoustics all day.</p>
+                            </div>
+                        </div>
+                        <div class="vibe-feature">
+                            <div class="vibe-icon">🌱</div>
+                            <div>
+                                <h4>Sustainable AF</h4>
+                                <p>Ethically sourced beans, eco-cups, and zero guilt.</p>
+                            </div>
+                        </div>
+                        <div class="vibe-feature">
+                            <div class="vibe-icon">⚡</div>
+                            <div>
+                                <h4>Free Fast WiFi</h4>
+                                <p>Stream, work, doom-scroll — we don't judge.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="vibes-gallery">
+                    <div class="gallery-card gallery-card-1">
+                        <img src="images/hero.png" alt="Coffee shop vibes">
+                        <div class="gallery-overlay">
+                            <span>☕ Cozy Corner</span>
+                        </div>
+                    </div>
+                    <div class="gallery-card gallery-card-2">
+                        <img src="images/iced-coffee.png" alt="Aesthetic drinks">
+                        <div class="gallery-overlay">
+                            <span>✨ Drink Goals</span>
+                        </div>
+                    </div>
+                    <div class="gallery-card gallery-card-3">
+                        <img src="images/matcha.png" alt="Matcha vibes">
+                        <div class="gallery-overlay">
+                            <span>🍵 Matcha Mood</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section" id="reviews">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">✦ THE REVIEWS</span>
+                <h2 class="section-title">
+                    Don't just take <span class="text-italic">our</span> word for it
+                </h2>
+                <p class="section-desc">Real sippers, real opinions. No cap. 🧢</p>
+            </div>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="review-text">"The lavender oat latte literally changed my life. I'm not being dramatic, it's that good. The vibes here are immaculate."</p>
+                    <div class="review-author">
+                        <div class="review-avatar" style="background: linear-gradient(135deg, #c084fc, #e879f9);">S</div>
+                        <div>
+                            <span class="review-name">Sarah K.</span>
+                            <span class="review-handle">@sarahsips ✨</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-card featured">
+                    <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="review-text">"Went for the coffee, stayed for the aesthetic. This place is literally the main character of coffee shops. 10/10 no notes."</p>
+                    <div class="review-author">
+                        <div class="review-avatar" style="background: linear-gradient(135deg, #fb923c, #f472b6);">J</div>
+                        <div>
+                            <span class="review-name">Jake M.</span>
+                            <span class="review-handle">@jakebrews 🔥</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="review-card">
+                    <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="review-text">"The matcha mochi latte is giving everything it needs to give. Plus the WiFi is fast enough for my zoom calls. Slay."</p>
+                    <div class="review-author">
+                        <div class="review-avatar" style="background: linear-gradient(135deg, #34d399, #60a5fa);">M</div>
+                        <div>
+                            <span class="review-name">Mia L.</span>
+                            <span class="review-handle">@mimatcha 💚</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-glow"></div>
+        <div class="section-container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to get your <span class="text-gradient">drip</span> on? ☕</h2>
+                <p class="cta-text">Order ahead, skip the line, and start sipping. Because your time is valuable and your coffee should be too.</p>
+                <div class="cta-actions">
+                    <button class="btn btn-primary btn-large" id="ctaOrderBtn">
+                        <span>Order Now</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+                    <div class="cta-note">
+                        <span>🕐 Open 7AM - 10PM Daily</span>
+                        <span>📍 420 Vibe Street, Aesthetic District</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="section-container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-tag">✦ FIND US</span>
+                    <h2 class="section-title">Come <span class="text-gradient">hang</span> with us</h2>
+                    <p class="contact-text">Pull up, grab a drink, and let's be friends. We're always down for good convos and great coffee.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <div>
+                                <strong>Location</strong>
+                                <p>420 Vibe Street, Aesthetic District</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">🕐</span>
+                            <div>
+                                <strong>Hours</strong>
+                                <p>Mon-Sun: 7AM - 10PM</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📱</span>
+                            <div>
+                                <strong>Socials</strong>
+                                <p>@dripcoffee on everything</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" id="contactForm">
+                        <h3>Drop us a line 💌</h3>
+                        <div class="form-group">
+                            <input type="text" id="nameInput" placeholder="Your name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="emailInput" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="messageInput" placeholder="What's on your mind? ✨" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Send It 🚀</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="section-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span class="footer-logo">☕ DRIP</span>
+                    <p>Coffee, but make it aesthetic. Serving good vibes and better brews since 2024.</p>
+                    <div class="footer-socials">
+                        <a href="#" class="social-link" aria-label="Instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="TikTok">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V13a8.28 8.28 0 005.58 2.16V11.7a4.83 4.83 0 01-3.77-1.24V6.69h3.77z"/></svg>
+                        </a>
+                        <a href="#" class="social-link" aria-label="Twitter">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Menu</h4>
+                    <a href="#">Hot Drinks</a>
+                    <a href="#">Iced Drinks</a>
+                    <a href="#">Specials</a>
+                    <a href="#">Pastries</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Company</h4>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Press</a>
+                    <a href="#">Blog</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Support</h4>
+                    <a href="#">FAQ</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Feedback</a>
+                    <a href="#">Gift Cards</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 DRIP Coffee. All rights reserved. Made with ☕ & 💜</p>
+                <p class="footer-tagline">it's giving caffeine ✨</p>
+                <button class="btn-admin-login" id="adminLoginBtn">🔐 Admin</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Order Modal -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div class="modal-header">
+                <h2>Your Order ☕</h2>
+                <p>Customize your drip</p>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="order-empty">
+                    <span class="order-empty-icon">🫗</span>
+                    <p>Your cup is empty!<br>Add something from the menu to get started.</p>
+                    <button class="btn btn-glass" id="goToMenu">Browse Menu ✨</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal-overlay" id="adminLoginModal">
+        <div class="modal-content" style="max-width:380px;">
+            <button class="modal-close" id="adminLoginClose">✕</button>
+            <div class="modal-header">
+                <h2>🔐 Admin Login</h2>
+                <p>Enter your password to access the admin panel</p>
+            </div>
+            <div style="padding:20px 0;">
+                <input type="password" id="adminPasswordInput" placeholder="Enter admin password" style="width:100%;padding:14px 18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#f0f0f5;font-family:'Inter',sans-serif;font-size:0.9rem;margin-bottom:16px;">
+                <div id="adminLoginError" style="color:#f87171;font-size:0.82rem;margin-bottom:12px;display:none;"></div>
+                <button class="btn btn-primary btn-full" id="adminLoginSubmit">Login 🚀</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <section class="admin-section" id="adminPanel" style="display:none;">
+        <div class="section-container">
+            <div class="section-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+                <div>
+                    <span class="section-tag">✦ ADMIN</span>
+                    <h2 class="section-title">Dashboard <span class="text-gradient">☕</span></h2>
+                </div>
+                <button class="btn btn-glass" id="adminLogoutBtn" style="font-size:0.8rem;padding:8px 18px;">Logout 🔒</button>
+            </div>
+
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-target="adminOrders">Orders 📋</button>
+                <button class="admin-tab" data-target="adminMenuItems">Menu Items 🍽️</button>
+                <button class="admin-tab" data-target="adminReviews">Reviews ⭐</button>
+                <button class="admin-tab" data-target="adminMessages">Messages 💌</button>
+            </div>
+
+            <!-- Orders Tab -->
+            <div class="admin-tab-content active" id="adminOrders">
+                <div class="admin-actions-bar">
+                    <span class="admin-count" id="orderCount">0 orders</span>
+                </div>
+                <div class="admin-order-detail" id="adminOrderDetail" style="display:none;"></div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminOrdersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Menu Items Tab -->
+            <div class="admin-tab-content" id="adminMenuItems">
+                <div class="admin-actions-bar">
+                    <span class="admin-count" id="menuCount">0 items</span>
+                    <button class="btn btn-primary" id="adminAddMenuItemBtn" style="font-size:0.8rem;padding:8px 18px;">+ Add Item</button>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                                <th>Available</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminMenuBody"></tbody>
+                    </table>
+                </div>
+                <!-- Add/Edit Menu Item Form -->
+                <div class="admin-form" id="adminMenuForm" style="display:none;">
+                    <h3 id="adminMenuFormTitle">Add Menu Item</h3>
+                    <div class="admin-form-grid">
+                        <input type="text" id="menuFormName" placeholder="Name" class="admin-input">
+                        <input type="number" id="menuFormPrice" placeholder="Price" step="0.01" class="admin-input">
+                        <select id="menuFormCategory" class="admin-input">
+                            <option value="hot">Hot</option>
+                            <option value="iced">Iced</option>
+                            <option value="special">Special</option>
+                        </select>
+                        <input type="text" id="menuFormImage" placeholder="Image path" class="admin-input">
+                    </div>
+                    <textarea id="menuFormDesc" placeholder="Description" class="admin-input" style="margin-top:10px;"></textarea>
+                    <div style="display:flex;gap:10px;margin-top:12px;">
+                        <button class="btn btn-primary" id="menuFormSave">Save ✅</button>
+                        <button class="btn btn-glass" id="menuFormCancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div class="admin-tab-content" id="adminReviews">
+                <div class="admin-actions-bar">
+                    <span class="admin-count" id="reviewCount">0 reviews</span>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Author</th>
+                                <th>Rating</th>
+                                <th>Text</th>
+                                <th>Approved</th>
+                                <th>Featured</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminReviewsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Messages Tab -->
+            <div class="admin-tab-content" id="adminMessages">
+                <div class="admin-actions-bar">
+                    <span class="admin-count" id="messageCount">0 messages</span>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminMessagesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

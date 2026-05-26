@@ -1,0 +1,4 @@
+node_modules/
+drip_coffee.db
+*.db
+.env
