@@ -1,4 +1,10 @@
-const API_BASE = '';
+const API_BASE = (() => {
+    const { protocol, hostname, port } = window.location;
+    const isLocalStaticPage = protocol === 'file:' ||
+        (['localhost', '127.0.0.1'].includes(hostname) && port && port !== '3030');
+
+    return isLocalStaticPage ? 'http://localhost:3030' : '';
+})();
 
 function escapeHTML(value) {
     return String(value ?? '').replace(/[&<>"']/g, char => ({
