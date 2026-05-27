@@ -16,6 +16,15 @@ function escapeHTML(value) {
     }[char]));
 }
 
+function formatPrice(value) {
+    const price = Number(value);
+    return Number.isFinite(price) ? price.toFixed(2) : '0.00';
+}
+
+function parseTagInput(value) {
+    return value.split(',').map(tag => tag.trim()).filter(Boolean);
+}
+
 // === CURSOR GLOW ===
 const cursorGlow = document.getElementById('cursorGlow');
 document.addEventListener('mousemove', (e) => {
@@ -156,21 +165,21 @@ document.addEventListener('click', function (e) {
 
 function renderMenuCards(items) {
     menuGrid.innerHTML = items.map((item, i) => `
-        <div class="menu-card reveal visible" data-category="${item.category}" style="animation-delay: ${i * 0.1}s">
+        <div class="menu-card reveal visible" data-category="${escapeHTML(item.category)}" style="animation-delay: ${i * 0.1}s">
             <div class="menu-card-image">
-                <img src="${item.image || 'images/hero.png'}" alt="${item.name}">
-                ${item.badge ? `<div class="menu-card-badge">${item.badge}</div>` : ''}
+                <img src="${escapeHTML(item.image || 'images/hero.png')}" alt="${escapeHTML(item.name)}">
+                ${item.badge ? `<div class="menu-card-badge">${escapeHTML(item.badge)}</div>` : ''}
             </div>
             <div class="menu-card-content">
                 <div class="menu-card-header">
-                    <h3>${item.name}</h3>
-                    <span class="menu-price">$${item.price.toFixed(2)}</span>
+                    <h3>${escapeHTML(item.name)}</h3>
+                    <span class="menu-price">$${formatPrice(item.price)}</span>
                 </div>
-                <p class="menu-card-desc">${item.description}</p>
+                <p class="menu-card-desc">${escapeHTML(item.description)}</p>
                 <div class="menu-card-tags">
-                    ${(item.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
+                    ${(item.tags || []).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}
                 </div>
-                <button class="menu-card-btn" data-id="${item.id}" data-name="${item.name}" data-price="${item.price}">Add to Order +</button>
+                <button class="menu-card-btn" data-id="${item.id}" data-name="${escapeHTML(item.name)}" data-price="${item.price}">Add to Order +</button>
             </div>
         </div>
     `).join('');
@@ -224,7 +233,7 @@ function renderCart() {
                     <div class="cart-item" style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
                         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
                             <div>
-                                <strong style="font-size:0.95rem;">${item.name}</strong>
+                                <strong style="font-size:0.95rem;">${escapeHTML(item.name)}</strong>
                                 <div style="font-size:0.78rem;color:#8b8b9e;margin-top:2px;">$${itemPrice.toFixed(2)} each</div>
                             </div>
                             <div style="display:flex;align-items:center;gap:12px;">
@@ -358,13 +367,13 @@ async function loadReviews() {
         const grid = document.querySelector('.reviews-grid');
         grid.innerHTML = data.map(review => `
             <div class="review-card ${review.is_featured ? 'featured' : ''} reveal visible">
-                <div class="review-stars">${'⭐'.repeat(review.rating)}</div>
-                <p class="review-text">"${review.text}"</p>
+                <div class="review-stars">${'⭐'.repeat(Math.min(5, Math.max(1, Number(review.rating) || 5)))}</div>
+                <p class="review-text">"${escapeHTML(review.text)}"</p>
                 <div class="review-author">
-                    <div class="review-avatar" style="background: ${review.avatar_color};">${review.author_name.charAt(0)}</div>
+                    <div class="review-avatar" style="background: ${escapeHTML(review.avatar_color)};">${escapeHTML(review.author_name.charAt(0))}</div>
                     <div>
-                        <span class="review-name">${review.author_name}</span>
-                        <span class="review-handle">${review.author_handle}</span>
+                        <span class="review-name">${escapeHTML(review.author_name)}</span>
+                        <span class="review-handle">${escapeHTML(review.author_handle)}</span>
                     </div>
                 </div>
             </div>
@@ -372,6 +381,46 @@ async function loadReviews() {
     } catch (err) {
         console.error('Failed to load reviews:', err);
     }
+}
+
+const reviewForm = document.getElementById('reviewForm');
+if (reviewForm) {
+    reviewForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = reviewForm.querySelector('button[type="submit"]');
+        const note = document.getElementById('reviewFormNote');
+        const original = btn.textContent;
+        btn.textContent = 'Submitting... ⏳';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`${API_BASE}/api/reviews`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    author_name: document.getElementById('reviewNameInput').value,
+                    author_handle: document.getElementById('reviewHandleInput').value,
+                    rating: document.getElementById('reviewRatingInput').value,
+                    text: document.getElementById('reviewTextInput').value
+                })
+            });
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error || 'Unable to submit review');
+            reviewForm.reset();
+            note.textContent = 'Thanks! Your review is waiting for admin approval.';
+            btn.textContent = 'Submitted ✅';
+            btn.style.background = 'linear-gradient(135deg, #34d399, #60a5fa)';
+        } catch (err) {
+            note.textContent = err.message || 'Review could not be submitted.';
+            btn.textContent = 'Try Again';
+        } finally {
+            setTimeout(() => {
+                btn.textContent = original;
+                btn.style.background = '';
+                btn.disabled = false;
+            }, 2500);
+        }
+    });
 }
 
 // ================================
@@ -690,27 +739,50 @@ window.updateOrderStatus = async function (id, status) {
 
 // === Admin: Menu Items ===
 let editingMenuId = null;
+let adminMenuItems = [];
 
 async function loadAdminMenu() {
     try {
-        const res = await fetch(`${API_BASE}/api/menu?category=all`);
+        const res = await fetch(`${API_BASE}/api/admin/menu`, {
+            headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
         const { data } = await res.json();
+        adminMenuItems = data || [];
         const tbody = document.getElementById('adminMenuBody');
-        document.getElementById('menuCount').textContent = `${data.length} items`;
-        tbody.innerHTML = data.map(item => `
+        document.getElementById('menuCount').textContent = `${adminMenuItems.length} items`;
+        tbody.innerHTML = adminMenuItems.map(item => `
             <tr>
                 <td>${item.id}</td>
-                <td>${item.name}</td>
-                <td>$${item.price.toFixed(2)}</td>
-                <td>${item.category}</td>
+                <td>${escapeHTML(item.name)}</td>
+                <td>$${formatPrice(item.price)}</td>
+                <td>${escapeHTML(item.category)}</td>
                 <td>${item.is_available ? '✅' : '❌'}</td>
+                <td>${escapeHTML(item.badge || '')}</td>
                 <td>
+                    <button class="btn-glass" style="font-size:0.75rem;padding:4px 12px;margin-right:6px;" onclick="editMenuItem(${item.id})">Edit</button>
                     <button class="btn-glass" style="font-size:0.75rem;padding:4px 12px;" onclick="deleteMenuItem(${item.id})">Delete 🗑️</button>
                 </td>
             </tr>
         `).join('');
     } catch (e) { console.error(e); }
 }
+
+window.editMenuItem = function (id) {
+    const item = adminMenuItems.find(menuItem => menuItem.id === id);
+    if (!item) return;
+    editingMenuId = id;
+    document.getElementById('adminMenuFormTitle').textContent = `Edit ${item.name}`;
+    document.getElementById('menuFormName').value = item.name || '';
+    document.getElementById('menuFormPrice').value = item.price || '';
+    document.getElementById('menuFormCategory').value = item.category || 'hot';
+    document.getElementById('menuFormImage').value = item.image || '';
+    document.getElementById('menuFormBadge').value = item.badge || '';
+    document.getElementById('menuFormTags').value = (item.tags || []).join(', ');
+    document.getElementById('menuFormDesc').value = item.description || '';
+    document.getElementById('menuFormAvailable').checked = Boolean(item.is_available);
+    document.getElementById('adminMenuForm').style.display = 'block';
+    document.getElementById('adminMenuForm').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+};
 
 window.deleteMenuItem = async function (id) {
     if (!confirm('Delete this menu item?')) return;
@@ -731,7 +803,10 @@ document.getElementById('adminAddMenuItemBtn').addEventListener('click', () => {
     document.getElementById('menuFormPrice').value = '';
     document.getElementById('menuFormCategory').value = 'hot';
     document.getElementById('menuFormImage').value = '';
+    document.getElementById('menuFormBadge').value = '';
+    document.getElementById('menuFormTags').value = '';
     document.getElementById('menuFormDesc').value = '';
+    document.getElementById('menuFormAvailable').checked = true;
     document.getElementById('adminMenuForm').style.display = 'block';
 });
 
@@ -744,15 +819,19 @@ document.getElementById('menuFormSave').addEventListener('click', async () => {
     const price = parseFloat(document.getElementById('menuFormPrice').value);
     const category = document.getElementById('menuFormCategory').value;
     const image = document.getElementById('menuFormImage').value || null;
+    const badge = document.getElementById('menuFormBadge').value || null;
+    const tags = parseTagInput(document.getElementById('menuFormTags').value);
     const description = document.getElementById('menuFormDesc').value;
+    const is_available = document.getElementById('menuFormAvailable').checked ? 1 : 0;
     if (!name || !price) return alert('Name and price required');
     try {
-        await fetch(`${API_BASE}/api/menu`, {
-            method: 'POST',
+        await fetch(`${API_BASE}${editingMenuId ? `/api/menu/${editingMenuId}` : '/api/menu'}`, {
+            method: editingMenuId ? 'PATCH' : 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
-            body: JSON.stringify({ name, description, price, category, image, tags: [] })
+            body: JSON.stringify({ name, description, price, category, image, badge, tags, is_available })
         });
         document.getElementById('adminMenuForm').style.display = 'none';
+        editingMenuId = null;
         loadAdminMenu();
         loadMenu();
     } catch (e) { console.error(e); }
@@ -770,9 +849,9 @@ async function loadAdminReviews() {
         tbody.innerHTML = data.map(review => `
             <tr>
                 <td>${review.id}</td>
-                <td>${review.author_name}</td>
-                <td>${'⭐'.repeat(review.rating)}</td>
-                <td><small>${review.text.substring(0, 60)}${review.text.length > 60 ? '...' : ''}</small></td>
+                <td>${escapeHTML(review.author_name)}</td>
+                <td>${'⭐'.repeat(Math.min(5, Math.max(1, Number(review.rating) || 5)))}</td>
+                <td><small>${escapeHTML(review.text.substring(0, 60))}${review.text.length > 60 ? '...' : ''}</small></td>
                 <td>${review.is_approved ? '✅' : `<button class="btn-glass" style="font-size:0.75rem;padding:2px 10px;" onclick="approveReview(${review.id})">Approve</button>`}</td>
                 <td>${review.is_featured ? '⭐' : `<button class="btn-glass" style="font-size:0.75rem;padding:2px 10px;" onclick="featureReview(${review.id}, true)">Feature</button>`}</td>
                 <td><button class="btn-glass" style="font-size:0.75rem;padding:2px 10px;" onclick="deleteReview(${review.id})">Delete 🗑️</button></td>
@@ -826,16 +905,42 @@ async function loadAdminMessages() {
         const tbody = document.getElementById('adminMessagesBody');
         document.getElementById('messageCount').textContent = `${data.length} messages`;
         tbody.innerHTML = data.map(msg => `
-            <tr>
+            <tr class="${msg.is_read ? '' : 'admin-row-unread'}">
                 <td>${msg.id}</td>
-                <td>${msg.name}</td>
-                <td><a href="mailto:${msg.email}" style="color:#c084fc;">${msg.email}</a></td>
-                <td><small>${msg.message.substring(0, 80)}${msg.message.length > 80 ? '...' : ''}</small></td>
+                <td>${escapeHTML(msg.name)}</td>
+                <td><a href="mailto:${escapeHTML(msg.email)}" style="color:#c084fc;">${escapeHTML(msg.email)}</a></td>
+                <td><small>${escapeHTML(msg.message.substring(0, 80))}${msg.message.length > 80 ? '...' : ''}</small></td>
+                <td>${msg.is_read ? 'Read' : 'New'}</td>
                 <td><small style="color:#5a5a6e;">${new Date(msg.created_at).toLocaleDateString()}</small></td>
+                <td>
+                    ${msg.is_read ? '' : `<button class="btn-glass" style="font-size:0.75rem;padding:2px 10px;margin-right:6px;" onclick="markMessageRead(${msg.id})">Mark Read</button>`}
+                    <button class="btn-glass" style="font-size:0.75rem;padding:2px 10px;" onclick="deleteMessage(${msg.id})">Delete</button>
+                </td>
             </tr>
         `).join('');
     } catch (e) { console.error(e); }
 }
+
+window.markMessageRead = async function (id) {
+    try {
+        await fetch(`${API_BASE}/api/contact/${id}/read`, {
+            method: 'PATCH',
+            headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
+        loadAdminMessages();
+    } catch (e) { console.error(e); }
+};
+
+window.deleteMessage = async function (id) {
+    if (!confirm('Delete this message?')) return;
+    try {
+        await fetch(`${API_BASE}/api/contact/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
+        loadAdminMessages();
+    } catch (e) { console.error(e); }
+};
 
 // === INIT ===
 async function init() {

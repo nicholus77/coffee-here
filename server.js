@@ -71,12 +71,61 @@ app.get('/api/menu/:id', (req, res) => {
   res.json({ success: true, data: item });
 });
 
+app.get('/api/admin/menu', requireAdmin, (req, res) => {
+  const items = queryAll('SELECT * FROM menu_items ORDER BY id')
+    .map(i => ({ ...i, tags: i.tags ? JSON.parse(i.tags) : [] }));
+  res.json({ success: true, data: items });
+});
+
 app.post('/api/menu', requireAdmin, (req, res) => {
   const { name, description, price, category, image, badge, tags } = req.body;
-  if (!name || !price || !category) return res.status(400).json({ success: false, error: 'Missing fields' });
+  const parsedPrice = Number(price);
+  if (!name || !Number.isFinite(parsedPrice) || parsedPrice <= 0 || !category) {
+    return res.status(400).json({ success: false, error: 'Name, price, and category are required' });
+  }
   const r = runSQL('INSERT INTO menu_items (name,description,price,category,image,badge,tags) VALUES (?,?,?,?,?,?,?)',
-    [name, description, price, category, image || null, badge || null, JSON.stringify(tags || [])]);
+    [name.trim(), description || '', parsedPrice, category, image || null, badge || null, JSON.stringify(Array.isArray(tags) ? tags : [])]);
   res.status(201).json({ success: true, data: { id: r.lastId } });
+});
+
+app.patch('/api/menu/:id', requireAdmin, (req, res) => {
+  const existing = queryOne('SELECT * FROM menu_items WHERE id = ?', [req.params.id]);
+  if (!existing) return res.status(404).json({ success: false, error: 'Not found' });
+
+  const next = {
+    name: req.body.name ?? existing.name,
+    description: req.body.description ?? existing.description,
+    price: req.body.price ?? existing.price,
+    category: req.body.category ?? existing.category,
+    image: req.body.image ?? existing.image,
+    badge: req.body.badge ?? existing.badge,
+    tags: req.body.tags ?? (existing.tags ? JSON.parse(existing.tags) : []),
+    is_available: req.body.is_available ?? existing.is_available
+  };
+  const parsedPrice = Number(next.price);
+  const available = next.is_available ? 1 : 0;
+
+  if (!String(next.name).trim() || !Number.isFinite(parsedPrice) || parsedPrice <= 0 || !next.category) {
+    return res.status(400).json({ success: false, error: 'Name, price, and category are required' });
+  }
+
+  runSQL(
+    `UPDATE menu_items
+     SET name = ?, description = ?, price = ?, category = ?, image = ?, badge = ?, tags = ?, is_available = ?
+     WHERE id = ?`,
+    [
+      String(next.name).trim(),
+      next.description || '',
+      parsedPrice,
+      next.category,
+      next.image || null,
+      next.badge || null,
+      JSON.stringify(Array.isArray(next.tags) ? next.tags : []),
+      available,
+      req.params.id
+    ]
+  );
+  res.json({ success: true, message: 'Menu item updated' });
 });
 
 app.delete('/api/menu/:id', requireAdmin, (req, res) => {
@@ -186,6 +235,18 @@ app.get('/api/contact', requireAdmin, (req, res) => {
   res.json({ success: true, data: queryAll('SELECT * FROM contact_messages ORDER BY created_at DESC') });
 });
 
+app.patch('/api/contact/:id/read', requireAdmin, (req, res) => {
+  const r = runSQL('UPDATE contact_messages SET is_read = 1 WHERE id = ?', [req.params.id]);
+  if (r.changes === 0) return res.status(404).json({ success: false, error: 'Not found' });
+  res.json({ success: true, message: 'Message marked as read' });
+});
+
+app.delete('/api/contact/:id', requireAdmin, (req, res) => {
+  const r = runSQL('DELETE FROM contact_messages WHERE id = ?', [req.params.id]);
+  if (r.changes === 0) return res.status(404).json({ success: false, error: 'Not found' });
+  res.json({ success: true, message: 'Message deleted' });
+});
+
 // ========== REVIEWS ==========
 app.get('/api/reviews', (req, res) => {
   res.json({ success: true, data: queryAll('SELECT * FROM reviews WHERE is_approved = 1 ORDER BY is_featured DESC, created_at DESC') });
@@ -217,9 +278,10 @@ app.delete('/api/reviews/:id', requireAdmin, (req, res) => {
 app.post('/api/reviews', (req, res) => {
   const { author_name, author_handle, rating, text } = req.body;
   if (!author_name || !text) return res.status(400).json({ success: false, error: 'Missing fields' });
+  const parsedRating = Math.min(5, Math.max(1, Number.parseInt(rating, 10) || 5));
   const colors = ['linear-gradient(135deg,#c084fc,#e879f9)', 'linear-gradient(135deg,#fb923c,#f472b6)', 'linear-gradient(135deg,#34d399,#60a5fa)'];
   const r = runSQL('INSERT INTO reviews (author_name,author_handle,rating,text,avatar_color,is_approved) VALUES (?,?,?,?,?,0)',
-    [author_name, author_handle || '', rating || 5, text, colors[Math.floor(Math.random() * colors.length)]]);
+    [author_name.trim(), author_handle || '', parsedRating, text.trim(), colors[Math.floor(Math.random() * colors.length)]]);
   res.status(201).json({ success: true, data: { id: r.lastId } });
 });
 
